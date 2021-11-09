@@ -1,0 +1,7 @@
+name: my api test
+on: [push]
+jobs:
+  lint-and-test:
+    steps:
+      - run: inso lint spec "My API"
+      - run: inso run test "Test 1" --env "OpenAPI env"
