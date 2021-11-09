@@ -1,0 +1,28 @@
+_id: spc_e4343fe209e547c8854603e55540444b
+type: ApiSpec
+parentId: wrk_195d01ec2fa84685861abfb82922783e
+modified: 1636475640822
+created: 1636401172569
+fileName: My API
+contents: |
+  openapi: 3.0.0
+  info:
+    title: My API
+    version: '1.0'
+    description: test with typicode
+  servers:
+    - url: https://my-json-server.typicode.com/bearc0025/api
+      variables: {}
+      description: github api
+  paths:
+    /posts:
+      summary: post level operations
+      description: fetch or add new posts
+      get:
+        summary: fetch all posts
+        description: return all posts from server
+        operationId: fetchPosts
+        responses:
+          default:
+            description: Default error sample response
+contentType: yaml

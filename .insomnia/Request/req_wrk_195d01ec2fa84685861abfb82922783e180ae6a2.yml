@@ -1,0 +1,21 @@
+_id: req_wrk_195d01ec2fa84685861abfb82922783e180ae6a2
+type: Request
+parentId: wrk_195d01ec2fa84685861abfb82922783e
+modified: 1636401460615
+created: 1636401460615
+url: "{{ base_url }}/posts"
+name: /posts
+description: ""
+method: DESCRIPTION
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1636401460615
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
