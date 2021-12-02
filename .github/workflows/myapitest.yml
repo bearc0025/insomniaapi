@@ -29,6 +29,6 @@ jobs:
       - name: Lint
         run: inso lint spec "My API" --ci
       - name: Run test suites
-        run: inso run test "Test 1" --env "OpenAPI env" --ci
+        run: inso run test uts_276215 --env "OpenAPI env" --ci
       - name: Generate declarative config
         run: inso generate config "My API" --type declarative --ci
