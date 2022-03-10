@@ -1,28 +1,254 @@
 _id: spc_e4343fe209e547c8854603e55540444b
 type: ApiSpec
 parentId: wrk_195d01ec2fa84685861abfb82922783e
-modified: 1646936777176
+modified: 1646939581974
 created: 1636401172569
 fileName: My API
 contents: |
-  openapi: 3.0.0
+  openapi: 3.0.1
   info:
-    title: My API
-    version: '1.0'
-    description: test with typicode
+    title: MyAPID
+    version: '1.3'
+    description: my api that...
+    termsOfService: https://www.example.com
+    contact:
+      email: bear@brainwashinc.com
+      name: Bear Cahill
+      url: https://www.example.com/contact
+    license:
+      name: Terms
+      url: https://www.example.com/terms
   servers:
+    - url: http://localhost:{port}
+      variables:
+        port:
+          default: '3000'
+          enum:
+            - '3000'
+            - '3001'
+          description: ports for testing vs staging
+      description: local test server
     - url: https://my-json-server.typicode.com/bearc0025/api
       variables: {}
-      description: github api
+      description: my git repo
+    - url: https://my-json-server.typicode.com/typicode/demo
+      variables: {}
+      description: Test server
   paths:
     /posts:
       summary: post level operations
-      description: fetch or add new posts
+      description: create new post, fetch posts
       get:
-        summary: fetch all posts
-        description: return all posts from server
-        operationId: fetchPosts
+        summary: fetch posts
+        description: returns posts from server
+        operationId: getPosts
+        parameters:
+          - name: _sort
+            in: query
+            schema:
+              type: string
+              example: title
+          - name: _order
+            in: query
+            schema:
+              type: string
+              example: asc
+              enum:
+                - asc
+                - desc
+          - name: q
+            in: query
+            schema:
+              type: string
+              example: bear
+          - name: _page
+            in: query
+            schema:
+              type: integer
+              minimum: 1
+              example: 2
+          - name: _limit
+            in: query
+            schema:
+              type: integer
+              minimum: 1
+              example: 1
         responses:
           default:
             description: Default error sample response
+            content:
+              application/json:
+                examples:
+                  example response:
+                    value: |-
+                      [
+                        {
+                          "id": 1,
+                          "title": "Post 1"
+                        },
+                        {
+                          "id": 2,
+                          "title": "Post 2"
+                        },
+                        {
+                          "id": 3,
+                          "title": "Post 3"
+                        }
+                      ]
+        tags:
+          - posts
+      post:
+        summary: create new post
+        description: stores post on server
+        operationId: postPost
+        requestBody:
+          $ref: '#/components/requestBodies/PostReq'
+        responses:
+          2XX:
+            $ref: '#/components/responses/PostResp'
+          5XX:
+            description: error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorcode:
+                      type: integer
+                      example: 1
+                    message:
+                      type: string
+                      example: internal error
+          default:
+            description: Default error sample response
+        tags:
+          - posts
+    /comments:
+      summary: comment level operations
+      description: create new comment, fetch comments
+      get:
+        summary: fetch comments
+        description: returns comments from server
+        operationId: getComments
+        responses:
+          default:
+            description: Default error sample response
+            content:
+              application/json:
+                examples:
+                  example response:
+                    value: |-
+                      [
+                        {
+                          "id": 1,
+                          "body": "some comment",
+                          "postId": 1
+                        },
+                        {
+                          "id": 2,
+                          "body": "some comment",
+                          "postId": 1
+                        }
+                      ]      
+        tags:
+          - comments
+    /reviews:
+      summary: review level operations
+      description: reviews and such
+      get:
+        summary: fetch reviews
+        description: returns review data
+        operationId: getReviews
+        responses:
+          default:
+            description: Default error sample response
+        tags:
+          - reviews
+    /posts/{postId}:
+      summary: post level operations
+      description: fetch, update, delete a post
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      get:
+        summary: fetch one post
+        description: returns one post
+        operationId: getPostById
+        responses:
+          default:
+            description: Default error sample response
+        tags:
+          - post
+      delete:
+        summary: delete a post
+        description: remove post from server
+        operationId: deletePost
+        responses:
+          default:
+            description: Default error sample response
+        tags:
+          - post
+      patch:
+        summary: update a post
+        description: updates post on server
+        operationId: patchPost
+        requestBody:
+          $ref: '#/components/requestBodies/PostReq'
+        responses:
+          2XX:
+            $ref: '#/components/responses/PostResp'
+          default:
+            description: Default error sample response
+        tags:
+          - post
+  components:
+    responses:
+      PostResp:
+        description: post returned from server
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostBody'
+        links:
+          GetPostById:
+            $ref: '#/components/links/GetPostById'
+    requestBodies:
+      PostReq:
+        description: create new post
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPostBody'
+    schemas:
+      NewPostBody:
+        type: object
+        properties:
+          title:
+            type: string
+            example: my post
+          author:
+            type: string
+            example: bear
+      PostBody:
+        allOf:
+          - $ref: '#/components/schemas/NewPostBody'
+          - type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+    parameters:
+      PostId:
+        name: postId
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+    links:
+      GetPostById:
+        operationId: getPostById
+        description: fetch post link
+        parameters:
+          postId: $response.body#/id
 contentType: yaml
