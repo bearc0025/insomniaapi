@@ -1,254 +1,181 @@
 _id: spc_e4343fe209e547c8854603e55540444b
 type: ApiSpec
 parentId: wrk_195d01ec2fa84685861abfb82922783e
-modified: 1652349007958
+modified: 1653854376331
 created: 1636401172569
 fileName: My API
-contents: |
+contents: |-
   openapi: 3.0.1
   info:
-    title: MyAPID
-    version: '1.3'
-    description: my api that...
-    termsOfService: https://www.example.com
+    title: My API
+    version: '1.0'
+    description: my api for users and game scores
+    termsOfService: https://www.example.com/tos
     contact:
-      email: bear@brainwashinc.com
-      name: Bear Cahill
-      url: https://www.example.com/contact
+      email: support@example.com
+      name: Support Team
+      url: https://www.example.com/support
     license:
-      name: Terms
-      url: https://www.example.com/terms
+      name: User License
+      url: https://www.example.com/license
   servers:
-    - url: http://localhost:{port}
+    - url: '{scheme}://localhost:{port}'
       variables:
+        scheme:
+          default: http
+          enum:
+            - http
+            - https
+          description: http v https for security
         port:
           default: '3000'
           enum:
             - '3000'
             - '3001'
-          description: ports for testing vs staging
-      description: local test server
+          description: debug v production port
+      description: local server
     - url: https://my-json-server.typicode.com/bearc0025/api
       variables: {}
-      description: my git repo
-    - url: https://my-json-server.typicode.com/typicode/demo
+      description: My fake server for git repo
+    - url: https://my-json-server.typicode.com/lchesnutt/api
       variables: {}
-      description: Test server
+      description: My fake server for git repo
   paths:
-    /posts:
-      summary: post level operations
-      description: create new post, fetch posts
+    /users:
+      summary: user base level opertations
+      description: fetch all users, add new user...
       get:
-        summary: fetch posts
-        description: returns posts from server
-        operationId: getPosts
-        parameters:
-          - name: _sort
-            in: query
-            schema:
-              type: string
-              example: title
-          - name: _order
-            in: query
-            schema:
-              type: string
-              example: asc
-              enum:
-                - asc
-                - desc
-          - name: q
-            in: query
-            schema:
-              type: string
-              example: bear
-          - name: _page
-            in: query
-            schema:
-              type: integer
-              minimum: 1
-              example: 2
-          - name: _limit
-            in: query
-            schema:
-              type: integer
-              minimum: 1
-              example: 1
-        responses:
-          default:
-            description: Default error sample response
-            content:
-              application/json:
-                examples:
-                  example response:
-                    value: |-
-                      [
-                        {
-                          "id": 1,
-                          "title": "Post 1"
-                        },
-                        {
-                          "id": 2,
-                          "title": "Post 2"
-                        },
-                        {
-                          "id": 3,
-                          "title": "Post 3"
-                        }
-                      ]
-        tags:
-          - posts
-      post:
-        summary: create new post
-        description: stores post on server
-        operationId: postPost
-        requestBody:
-          $ref: '#/components/requestBodies/PostReq'
+        summary: fetch all users
+        description: return users from server
+        operationId: fetchUsers
         responses:
           2XX:
-            $ref: '#/components/responses/PostResp'
-          5XX:
-            description: error
+            $ref: '#/components/responses/UserArrayResponseBody'
+          default:
+            description: Default error sample response
             content:
               application/json:
                 schema:
-                  type: object
-                  properties:
-                    errorcode:
-                      type: integer
-                      example: 1
-                    message:
-                      type: string
-                      example: internal error
-          default:
-            description: Default error sample response
+                  $ref: '#/components/schemas/ErrorResponse'
         tags:
-          - posts
-    /comments:
-      summary: comment level operations
-      description: create new comment, fetch comments
-      get:
-        summary: fetch comments
-        description: returns comments from server
-        operationId: getComments
-        responses:
-          default:
-            description: Default error sample response
-            content:
-              application/json:
-                examples:
-                  example response:
-                    value: |-
-                      [
-                        {
-                          "id": 1,
-                          "body": "some comment",
-                          "postId": 1
-                        },
-                        {
-                          "id": 2,
-                          "body": "some comment",
-                          "postId": 1
-                        }
-                      ]      
-        tags:
-          - comments
-    /reviews:
-      summary: review level operations
-      description: reviews and such
-      get:
-        summary: fetch reviews
-        description: returns review data
-        operationId: getReviews
-        responses:
-          default:
-            description: Default error sample response
-        tags:
-          - reviews
-    /posts/{postId}:
-      summary: post level operations
-      description: fetch, update, delete a post
-      parameters:
-        - $ref: '#/components/parameters/PostId'
-      get:
-        summary: fetch one post
-        description: returns one post
-        operationId: getPostById
-        responses:
-          default:
-            description: Default error sample response
-        tags:
-          - post
-      delete:
-        summary: delete a post
-        description: remove post from server
-        operationId: deletePost
-        responses:
-          default:
-            description: Default error sample response
-        tags:
-          - post
-      patch:
-        summary: update a post
-        description: updates post on server
-        operationId: patchPost
+          - users
+      post:
+        summary: create a new user
+        description: store user on server
+        operationId: createUser
         requestBody:
-          $ref: '#/components/requestBodies/PostReq'
+          $ref: '#/components/requestBodies/UserPostBody'
         responses:
-          2XX:
-            $ref: '#/components/responses/PostResp'
+          '201':
+            $ref: '#/components/responses/UserRespBody'
           default:
             description: Default error sample response
         tags:
-          - post
+          - users
+    /users/{userId}:
+      summary: user operations
+      description: fetch, update, delete a user
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      get:
+        summary: fetch one user
+        description: retrieve a user by user id from the server
+        operationId: fetchUser
+        responses:
+          '2XX':
+            $ref: '#/components/responses/UserRespBody'
+          default:
+            description: Default error sample response
+        tags:
+          - users
+      delete:
+        summary: delete one user
+        description: delete a user by user id from the server
+        operationId: deleteUser
+        responses:
+          '2XX':
+            $ref: '#/components/responses/UserDeleteBody'
+          default:
+            description: Default error sample response
+        tags:
+          - users
+        security:
+          - BAuth: []
   components:
+    securitySchemes:
+      BAuth:
+        type: http
+        scheme: basic
+    parameters:
+      UserId:
+        name: userId
+        in: path
+        required: true
+        description: user id for user operations
+        schema:
+          type: string
+          example: qwerty  
     responses:
-      PostResp:
-        description: post returned from server
+      UserArrayResponseBody:
+        description: multiple User bodies
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostBody'
-        links:
-          GetPostById:
-            $ref: '#/components/links/GetPostById'
+              $ref: '#/components/schemas/UserArray'
+      UserRespBody:
+        description: single User body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FullUser'
+      UserDeleteBody:
+        description: deleted User
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyUser'
     requestBodies:
-      PostReq:
-        description: create new post
+      UserPostBody:
+        description: body of new user
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewPostBody'
+              $ref: '#/components/schemas/PostNewUser'
     schemas:
-      NewPostBody:
+      UserArray:
+        type: array
+        items:
+          $ref: '#/components/schemas/FullUser'
+      EmptyUser:
+        type: object
+      PostNewUser:
         type: object
         properties:
-          title:
+          username:
             type: string
-            example: my post
-          author:
-            type: string
-            example: bear
-      PostBody:
+            example: bear2
+          score:
+            type: integer
+            example: 670
+          active:
+            type: boolean
+            example: true
+      FullUser:
         allOf:
-          - $ref: '#/components/schemas/NewPostBody'
+          - $ref: '#/components/schemas/PostNewUser'
           - type: object
             properties:
               id:
-                type: integer
-                example: 1
-    parameters:
-      PostId:
-        name: postId
-        in: path
-        required: true
-        schema:
-          type: integer
-          example: 1
-    links:
-      GetPostById:
-        operationId: getPostById
-        description: fetch post link
-        parameters:
-          postId: $response.body#/id
+                type: string
+                example: 1234abc7
+      ErrorResponse:
+        type: object
+        properties:
+          success:
+            type: boolean
+            example: false
+          message:
+            type: string
+            example: we couldn't find...
 contentType: yaml
