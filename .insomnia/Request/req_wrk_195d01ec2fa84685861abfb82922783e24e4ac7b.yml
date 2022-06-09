@@ -1,0 +1,21 @@
+_id: req_wrk_195d01ec2fa84685861abfb82922783e24e4ac7b
+type: Request
+parentId: wrk_195d01ec2fa84685861abfb82922783e
+modified: 1653854371262
+created: 1653854371262
+url: "{{ base_url }}/users/{{ userId }}"
+name: fetch one user
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1653854371262
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

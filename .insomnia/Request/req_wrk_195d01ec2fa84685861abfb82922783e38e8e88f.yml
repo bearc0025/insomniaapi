@@ -1,0 +1,24 @@
+_id: req_wrk_195d01ec2fa84685861abfb82922783e38e8e88f
+type: Request
+parentId: wrk_195d01ec2fa84685861abfb82922783e
+modified: 1653855061158
+created: 1653854371260
+url: "{{ base_url }}/users/{{ userId }}"
+name: delete one user
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1653854371260
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
