@@ -27,4 +27,4 @@ jobs:
       - name: Lint
         run: inso lint spec spc_e4343f --ci
       - name: Run test suites
-        run: inso run test "InsoTests" --env env_env_65edc1 --ci
+        run: inso run test uts_c695a0 --env env_env_65edc1 --ci
