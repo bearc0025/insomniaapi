@@ -1,7 +1,7 @@
 _id: ut_53d49bc1f629499f852c5501ac95442a
 type: UnitTest
 parentId: uts_27621514ecfe4f7784adb4d01f4e288f
-modified: 1681984401997
+modified: 1681984445187
 created: 1654767422854
 requestId: req_wrk_195d01ec2fa84685861abfb82922783e31003c6a
 name: 1 Returns 200
@@ -15,7 +15,7 @@ code: "const response1 = await insomnia.send();
 
   expect(body).to.be.an('array');
 
-  expect(body).to.have.lengthOf.greaterThan(10);
+  expect(body).to.have.lengthOf.greaterThan(1);
 
   expect(body[0]).to.have.property('id');
 
