@@ -1,13 +1,13 @@
 _id: ut_53d49bc1f629499f852c5501ac95442a
 type: UnitTest
 parentId: uts_27621514ecfe4f7784adb4d01f4e288f
-modified: 1683799416234
+modified: 1683799457270
 created: 1654767422854
 requestId: req_wrk_195d01ec2fa84685861abfb82922783e31003c6a
 name: 1 Returns 200
 code: "const response1 = await insomnia.send();
 
-  expect(response1.status).to.equal(201);
+  expect(response1.status).to.equal(200);
 
 
   const body = JSON.parse(response1.data);
